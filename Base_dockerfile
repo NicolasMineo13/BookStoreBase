@@ -1,0 +1,85 @@
+FROM php:8.2-apache as php_apache_server
+
+ENV user=ricardo
+ENV uid=1000
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    libpq-dev \
+    emacs
+
+# Installation du client mysql pour executer des commandes SQL si nécessaire. 
+RUN apt-get install -y default-mysql-client
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install pdo_mysql
+
+#Enable the mod_rewrite
+RUN /usr/sbin/a2enmod rewrite
+
+# Changed the document root to /var/www/html to test. I also copied the input.php file to the root directory of te projet. 
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN sed -ri -e 's!AllowOverride None!AllowOverride All!g' /etc/apache2/apache2.conf
+
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+
+FROM php_apache_server AS app_server 
+WORKDIR /var/www/html
+COPY ./ ./
+COPY .env.docker .env
+COPY .env.docker.testing .env.testing
+ 
+# Creation of the vendor directory.
+RUN composer install
+
+# Clear the compiled files, update the needed classes and write them back.
+RUN php artisan clear-compiled 
+RUN composer dump-autoload
+RUN php artisan optimize
+
+# Clearing the config and general caches.
+RUN php artisan config:clear
+RUN php artisan cache:clear
+
+# Installation of nodejs and npm for the compilation of the assets of the project.
+# Temporary commented.
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x 
+RUN apt-get update 
+RUN apt-get install --fix-missing -y nodejs npm  
+RUN npm install
+RUN npm run build
+
+RUN chmod 777 Docker/entrypoint.sh
+
+RUN chmod -R 755 storage/
+
+# Changing the ouwner of these directories so to be able to write in them.
+#RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R $user:www-data storage
+RUN chown -R $user:www-data bootstrap/cache
+
+# Changing the permissions over these directories.
+RUN chmod -R 775 storage
+RUN chmod -R 775 bootstrap/cache
+
+EXPOSE 80
+
+#ENTRYPOINT ["Docker/entrypoint.sh"]

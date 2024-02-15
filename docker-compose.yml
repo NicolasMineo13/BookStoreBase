@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  # Database server.
+  BookStore-db-server:
+    image: mysql:8.1.0
+    container_name: BookStore-db-server
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      #MYSQL_ROOT_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT: ${DB_PASSWORD}
+      #MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+    volumes:
+      - BookStore-db-data:/var/lib/mysql
+    networks:
+      - BookStore-net
+
+  BookStoreMyAdmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: BookStoreMyAdmin
+    depends_on:
+      - BookStore-db-server
+    environment:
+      PMA_HOST: BookStore-db-server
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8020:80
+    networks:
+      - BookStore-net
+
+  BookStoreServer:
+    image: bookstore:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: BookStoreServer
+    ports:
+    - '8025:80'
+    #volumes:
+    #- WebApp:/var/www/html
+    networks:
+      - BookStore-net
+
+networks:
+  BookStore-net:
+      name: BookStore-net
+      external: false
+
+volumes:
+  BookStore-db-data: ~
+  WebApp:
+    external: false
