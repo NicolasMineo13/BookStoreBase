@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
 
 <head>
     <meta charset="utf-8">
@@ -45,19 +45,19 @@
 <body class="antialiased">
     <!-- Header -->
     <div class="header">
-        @if (Route::has('login'))
+        <?php if(Route::has('login')): ?>
         <div>
-            @auth
-            <a href="{{ url('/dashboard') }}">Accueil</a>
-            @else
-            <a href="{{ route('login') }}">Connexion</a>
+            <?php if(auth()->guard()->check()): ?>
+            <a href="<?php echo e(url('/dashboard')); ?>">Accueil</a>
+            <?php else: ?>
+            <a href="<?php echo e(route('login')); ?>">Connexion</a>
 
-            @if (Route::has('register'))
-            <a href="{{ route('register') }}">Inscription</a>
-            @endif
-            @endauth
+            <?php if(Route::has('register')): ?>
+            <a href="<?php echo e(route('register')); ?>">Inscription</a>
+            <?php endif; ?>
+            <?php endif; ?>
         </div>
-        @endif
+        <?php endif; ?>
     </div>
 
     <!-- Contenu principal -->
@@ -72,4 +72,4 @@
     </div>
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\Miste\Desktop\IUT\Maintenance applicative\BookStoreBase\resources\views/welcome.blade.php ENDPATH**/ ?>
