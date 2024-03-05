@@ -7,6 +7,12 @@
         <div class="pull-right">
             <a class="btn btn-success" href="<?php echo e(route('books.create')); ?>"> Créer un livre</a>
         </div>
+        <div class="pull-right">
+            <form action="<?php echo e(route('books.search')); ?>" method="GET">
+                <input type="text" name="search" placeholder="Rechercher un livre">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -65,7 +65,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="main-content">
-                    <h1>Bienvenue sur ma page d'accueil</h1>
+                    <h1>Bienvenue sur BookStore</h1>
+                    <h5>Vous pouvez vous connecter ou vous inscrire pour accéder à l'application.</h5>
+                    <h5>Une fois connecté(e) vous aurez accès à la liste des livres, des auteurs, des commandes et des factures, vous pourrez également passer commande ou simplement modifier un livre et bien d'autres fonctionnalités à découvrir !</h5>
                 </div>
             </div>
         </div>

@@ -9,6 +9,12 @@
         <div class="pull-right">
             <a class="btn btn-success" href="{{ route('books.create') }}"> Créer un livre</a>
         </div>
+        <div class="pull-right">
+            <form action="{{ route('books.search') }}" method="GET">
+                <input type="text" name="search" placeholder="Rechercher un livre">
+                <button type="submit" class="btn btn-primary">Rechercher</button>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -17,8 +17,8 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $books = Book::withTrashed()->get();
-        return view("books.books",compact('books'))
-                    ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view("books.books", compact('books'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -36,11 +36,11 @@ class BookController extends Controller
     public function store(Request $request, Book $book)
     {
         $this->validation($request, $book);
-        
+
         Book::create($request->all());
-         
+
         return redirect()->route('books.index')
-                        ->with('success','Book created successfully.');
+            ->with('success', 'Book created successfully.');
     }
 
     /**
@@ -74,12 +74,12 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-       $this->validation($request, $book);
+        $this->validation($request, $book);
 
         $book->update($request->all());
-        
+
         return redirect()->route('books.index')
-                        ->with('success','Book updated successfully');
+            ->with('success', 'Book updated successfully');
     }
 
     /**
@@ -97,7 +97,7 @@ class BookController extends Controller
             'unitPrice' => 'required|numeric|min:0',
             'author_id' => 'required'
         ]);
-        
+
         // Look for the name of the author that has been chosen in the storage connection database.
         /*
         $author = DB::connection('storage')
@@ -112,22 +112,32 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
-         
+
         return redirect()->route('books.index')
-                        ->with('success','Book deleted successfully');
+            ->with('success', 'Book deleted successfully');
     }
 
-     /**
+    /**
      * Restore the specified resource from storage.
      */
     public function restore(Request $request, string $isbn)
     {
-       $isbn = $request->input("ISBN");
-       $book = Book::withTrashed()->find($isbn); 
-       $book->restore();
-         
+        $isbn = $request->input("ISBN");
+        $book = Book::withTrashed()->find($isbn);
+        $book->restore();
+
         return redirect()->route('books.index')
-                        ->with('success','Book restored successfully');
+            ->with('success', 'Book restored successfully');
     }
 
+    // Fonction de recherche
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $books = Book::where('title', 'like', '%' . $search . '%')
+            ->orWhere('ISBN', 'like', '%' . $search . '%')
+            ->get();
+        return view('books.books', compact('books'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
+    }
 }

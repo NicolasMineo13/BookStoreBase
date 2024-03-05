@@ -15,6 +15,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm">
+                        <a class="btn btn-primary" href="<?php echo e(url('/dashboard')); ?>">Accueil</a>
+                    </div>
+                    <div class="col-sm">
                         <a class="btn btn-primary" href="<?php echo e(route('books.index')); ?>">Liste des livres</a>
                     </div>
                     <div class="col-sm">
@@ -47,7 +50,7 @@
 <?php endif; ?>
 <?php $component->withAttributes(['href' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('logout')),'onclick' => 'event.preventDefault();
                                                     this.closest(\'form\').submit();','class' => 'btn btn-primary']); ?>
-                                <?php echo e(__('Finaliser la session')); ?>
+                                <?php echo e(__('Déconnexion')); ?>
 
                              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

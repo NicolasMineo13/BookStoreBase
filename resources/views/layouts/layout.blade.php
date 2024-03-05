@@ -15,6 +15,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm">
+                        <a class="btn btn-primary" href="{{ url('/dashboard') }}">Accueil</a>
+                    </div>
+                    <div class="col-sm">
                         <a class="btn btn-primary" href="{{ route('books.index') }}">Liste des livres</a>
                     </div>
                     <div class="col-sm">
@@ -37,7 +40,7 @@
                             @csrf
                             <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
                                                     this.closest('form').submit();" class="btn btn-primary">
-                                {{ __('Finaliser la session') }}
+                                {{ __('Déconnexion') }}
                             </x-responsive-nav-link>
                         </form>
                     </div>

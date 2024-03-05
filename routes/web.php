@@ -44,6 +44,7 @@ Route::middleware('auth')->controller(BookController::class)->group(function () 
     Route::post('/books/{book}', 'update')->name('books.update');
     Route::delete('/books/{book}', 'destroy')->name('books.destroy');
     Route::post('/books',  ['as' => 'books.restore', 'uses' => 'App\Http\Controllers\BookController@index']);
+    Route::get('/books/search', 'search')->name('books.search');
 });
 
 Route::middleware('auth')->controller(AuthorController::class)->group(function () {
@@ -59,7 +60,7 @@ Route::middleware('auth')->controller(AuthorController::class)->group(function (
 });
 
 Route::middleware('auth')->controller(CartController::class)->group(function () {
-    
+
     // These routes are associated with a REST API. 
     Route::get('/cart/addItem/{book}', 'addItem')->name('cart.addItem');
     Route::get('/cart/{cart}', 'show')->name('cart.show');
@@ -69,20 +70,19 @@ Route::middleware('auth')->controller(CartController::class)->group(function () 
 });
 
 Route::middleware('auth')->controller(ItemController::class)->group(function () {
-    
+
     // These routes are associated with a REST API. 
     Route::delete('/items/{item}/{cart}', 'destroy')->name('item.destroy');
     Route::post('/books/{item}/{cart}', 'update')->name('item.update');
 });
 
 Route::middleware('auth')->controller(CommandController::class)->group(function () {
-    
+
     // These routes are associated with a REST API. 
     Route::get('/commands', 'index')->name('command.index');
     Route::get('/commands/{command}/show', 'show')->name('command.show');
     Route::get('/commands/{cart}/create', 'create')->name("command.create");
     Route::post('/commands', 'store')->name('command.store');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
