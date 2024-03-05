@@ -18,13 +18,13 @@
                         <a class="btn btn-primary" href="{{ route('books.index') }}">Liste des livres</a>
                     </div>
                     <div class="col-sm">
-                        <a class="btn btn-primary" href="{{ route('author.index') }}">Liste des autheurs</a>
+                        <a class="btn btn-primary" href="{{ route('author.index') }}">Liste des auteurs</a>
                     </div>
                     <div class="col-sm">
                         <a class="btn btn-primary" href="{{ route('command.index') }}">Liste des commandes</a>
                     </div>
                     <div class="col-sm">
-                        <a class="btn btn-primary" href="">Liste of factures</a>
+                        <a class="btn btn-primary" href="">Liste des factures</a>
                     </div>
                     <div class="col-sm">
                         @if(Session::has('Cart_code'))

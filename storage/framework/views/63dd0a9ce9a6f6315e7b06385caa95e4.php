@@ -18,13 +18,13 @@
                         <a class="btn btn-primary" href="<?php echo e(route('books.index')); ?>">Liste des livres</a>
                     </div>
                     <div class="col-sm">
-                        <a class="btn btn-primary" href="<?php echo e(route('author.index')); ?>">Liste des autheurs</a>
+                        <a class="btn btn-primary" href="<?php echo e(route('author.index')); ?>">Liste des auteurs</a>
                     </div>
                     <div class="col-sm">
                         <a class="btn btn-primary" href="<?php echo e(route('command.index')); ?>">Liste des commandes</a>
                     </div>
                     <div class="col-sm">
-                        <a class="btn btn-primary" href="">Liste of factures</a>
+                        <a class="btn btn-primary" href="">Liste des factures</a>
                     </div>
                     <div class="col-sm">
                         <?php if(Session::has('Cart_code')): ?>

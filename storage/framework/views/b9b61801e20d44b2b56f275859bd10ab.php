@@ -1,0 +1,69 @@
+<?php $__env->startSection('content'); ?>
+<div class="row">
+    <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <h2>Ajouter un auteur</h2>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-primary" href="<?php echo e(route('author.index')); ?>"> Retour</a>
+        </div>
+    </div>
+</div>
+
+<?php if($errors->any()): ?>
+<div class="alert alert-danger">
+    <strong>Whoops!</strong> Il y a des problèmes avec l'input.<br><br>
+    <ul>
+        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <li><?php echo e($error); ?></li>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </ul>
+</div>
+<?php endif; ?>
+
+<form action="<?php echo e(route('author.store')); ?>" method="POST">
+    <?php echo csrf_field(); ?>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>DNI:</strong>
+                <input type="text" name="id" class="form-control" placeholder="DNI" maxlenght="32" value="<?php echo e(old('id')); ?>">
+                <?php if($errors->has('name')): ?>
+                <span><?php echo e($errors->first('id')); ?></span>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Prénom:</strong>
+                    <input type="text" name="name" class="form-control" placeholder="Prénom" value="<?php echo e(old('name')); ?>">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Nom:</strong>
+                    <input type="text" name="lastName" class="form-control" placeholder="Nom de famille" value="<?php echo e(old('lastName')); ?>">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Date de naissance:</strong>
+                    <input class="form-control" type="date" name="birth" min="1920-01-01" max="2018-12-31" value="<?php echo e(old('birth')); ?>">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Biographie:</strong>
+                    <textarea class="form-control" style="height:50px" name="biography" placeholder="Biographie"><?php echo e(old('biography')); ?></textarea>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </div>
+        </div>
+
+</form>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.layout', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Miste\Desktop\IUT\Maintenance applicative\BookStoreBase\resources\views/author/create.blade.php ENDPATH**/ ?>
